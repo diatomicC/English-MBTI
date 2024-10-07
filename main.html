@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20 Questions Short MBTI Test with Parangbox 📦</title>
+    <style>
+        :root {
+            --primary-blue: #4a90e2;
+            --light-blue: #e6f3ff;
+            --dark-blue: #2c3e50;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--light-blue);
+            color: var(--dark-blue);
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: var(--white);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: var(--primary-blue);
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        .question {
+            background-color: var(--light-blue);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 15px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1em;
+        }
+        button:hover {
+            background-color: var(--dark-blue);
+            transform: scale(1.05);
+        }
+        #result {
+            text-align: center;
+            font-size: 1.5em;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--primary-blue);
+            color: var(--white);
+            border-radius: 15px;
+            display: none;
+        }
+        #progress {
+            margin-bottom: 20px;
+            background-color: var(--light-blue);
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+        #progress-bar {
+            height: 100%;
+            background-color: var(--primary-blue);
+            width: 0;
+            transition: width 0.3s ease;
+        }
+        .emoji {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+        .promo {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        .promo a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .promo a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📦 20 Questions Short MBTI Test with Parangbox 📦</h1>
+        <div id="progress">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="quiz">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        <div id="result"></div>
+        <div class="promo">
+            Learn Korean and Korean culture! 🇰🇷<br>
+            Follow us on Instagram: <a href="https://www.instagram.com/parangbox.korean/" target="_blank">@parangbox.korean</a>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "You prefer to work in groups rather than alone.", emoji: "👥" },
+            { text: "You enjoy being the center of attention.", emoji: "🌟" },
+            { text: "You make decisions based on facts rather than feelings.", emoji: "🧠" },
+            { text: "You prefer to have a detailed plan rather than be spontaneous.", emoji: "📅" },
+            { text: "You enjoy theoretical discussions.", emoji: "💭" },
+            { text: "You tend to focus on details rather than the big picture.", emoji: "🔍" },
+            { text: "You prefer to keep your options open rather than make a final decision.", emoji: "🚪" },
+            { text: "You are more of a realist than an idealist.", emoji: "🌎" },
+            { text: "You find it easy to approach and talk to strangers.", emoji: "🗣️" },
+            { text: "You prefer to have a wide circle of acquaintances rather than a few close friends.", emoji: "🌐" },
+            { text: "You tend to think before you speak.", emoji: "🤔" },
+            { text: "You prefer to focus on the present rather than the future.", emoji: "⏰" },
+            { text: "You enjoy abstract ideas and theories.", emoji: "🎨" },
+            { text: "You prefer to follow a schedule rather than be spontaneous.", emoji: "📆" },
+            { text: "You make decisions with your heart more than your head.", emoji: "❤️" },
+            { text: "You prefer to finish one project before starting another.", emoji: "✅" },
+            { text: "You get energized by social interactions.", emoji: "🎉" },
+            { text: "You prefer to improvise rather than prepare in detail.", emoji: "🎭" },
+            { text: "You tend to look for deeper meaning in things.", emoji: "🔮" },
+            { text: "You prefer having a 'to-do' list.", emoji: "📝" }
+        ];
+
+        let currentQuestion = 0;
+        const answers = [];
+
+        function displayQuestion() {
+            const quizContainer = document.getElementById('quiz');
+            if (currentQuestion < questions.length) {
+                quizContainer.innerHTML = `
+                    <div class="question">
+                        <span class="emoji">${questions[currentQuestion].emoji}</span>
+                        <p>${questions[currentQuestion].text}</p>
+                        <div class="options">
+                            <button onclick="answerQuestion('yes')">Agree 😊</button>
+                            <button onclick="answerQuestion('no')">Disagree 🤔</button>
+                        </div>
+                    </div>
+                `;
+                updateProgress();
+            } else {
+                calculateResult();
+            }
+        }
+
+        function answerQuestion(answer) {
+            answers.push(answer);
+            currentQuestion++;
+            if (currentQuestion < questions.length) {
+                displayQuestion();
+            } else {
+                calculateResult();
+            }
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progress-bar');
+            const progress = (currentQuestion / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function calculateResult() {
+            let e = 0, i = 0, s = 0, n = 0, t = 0, f = 0, j = 0, p = 0;
+
+            [0, 1, 8, 9, 16].forEach(index => answers[index] === 'yes' ? e++ : i++);
+            [4, 5, 12, 13, 18].forEach(index => answers[index] === 'yes' ? n++ : s++);
+            [2, 7, 14, 15, 19].forEach(index => answers[index] === 'yes' ? t++ : f++);
+            [3, 6, 10, 11, 17].forEach(index => answers[index] === 'yes' ? j++ : p++);
+
+            const mbti = `${e > i ? 'E' : 'I'}${s > n ? 'S' : 'N'}${t > f ? 'T' : 'F'}${j > p ? 'J' : 'P'}`;
+            
+            document.getElementById('quiz').style.display = 'none';
+            const resultElement = document.getElementById('result');
+            resultElement.style.display = 'block';
+            resultElement.innerHTML = `
+                <h2>🎉 Your MBTI type is: 🎉</h2>
+                <p style="font-size: 2em; font-weight: bold;">${mbti}</p>
+                <p>Wow, you're unique and amazing! 🌈✨</p>
+                <button onclick="resetTest()">Take the test again 🔄</button>
+            `;
+        }
+
+        function resetTest() {
+            currentQuestion = 0;
+            answers.length = 0;
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('quiz').style.display = 'block';
+            displayQuestion();
+        }
+
+        displayQuestion();
+    </script>
+</body>
+</html>
